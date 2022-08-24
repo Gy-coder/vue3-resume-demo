@@ -9,8 +9,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@types/lodash": "^4.14.184",
     "@vitejs/plugin-vue-jsx": "^2.0.0",
     "codemirror-editor-vue3": "^2.1.7",
+    "lodash": "^4.17.21",
+    "markdown-it": "^13.0.1",
     "vue": "^3.2.37"
   },
   "devDependencies": {

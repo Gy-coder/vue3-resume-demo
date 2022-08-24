@@ -1,5 +1,8 @@
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, computed } from 'vue';
 import Codemirror from 'codemirror-editor-vue3';
+import { debounce } from 'lodash';
+import MarkdownIt from 'markdown-it';
+const markdownIt = new MarkdownIt();
 
 // language
 // import 'codemirror/mode/md';
@@ -7,9 +10,7 @@ import Codemirror from 'codemirror-editor-vue3';
 // theme
 import 'codemirror/theme/dracula.css';
 
-import "codemirror/mode/markdown/markdown.js";
-
-
+import 'codemirror/mode/markdown/markdown.js';
 
 const cmOptions = {
   mode: 'markdown', // Language mode
@@ -27,11 +28,14 @@ const App = defineComponent({
   setup() {
     const md = ref('');
     const onChange = (val: string) => {
-      console.log('run', val);
+      md.value = val;
     };
+    const html = computed(() => {
+      return markdownIt.render(md.value);
+    });
     return () => (
       <>
-        {md.value}
+        <div v-html={html.value}></div>
         <Codemirror
           value={md.value}
           options={cmOptions}
@@ -39,7 +43,7 @@ const App = defineComponent({
           placeholder="test placeholder"
           height="1500"
           width="100%"
-          onChange={onChange}
+          onChange={debounce(onChange, 300)}
         />
       </>
     );
